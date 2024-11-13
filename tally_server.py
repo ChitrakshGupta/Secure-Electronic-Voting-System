@@ -11,20 +11,8 @@ VOTES_FILE = 'votes.json'
 def start_new_session():
     """Clear previous votes to start a new voting session."""
     if os.path.exists(VOTES_FILE):
-        os.remove(VOTES_FILE)  # Delete the previous votes file
+        os.remove(VOTES_FILE)
     print("New voting session started. All previous votes cleared.")
-
-def save_vote(vote_entry):
-    """Append a new vote to the votes.json file."""
-    votes = []
-    if os.path.exists(VOTES_FILE):
-        with open(VOTES_FILE, 'r') as f:
-            votes = json.load(f)
-
-    votes.append(vote_entry)
-
-    with open(VOTES_FILE, 'w') as f:
-        json.dump(votes, f)
 
 def tally_votes():
     """Process and tally votes from the current session."""
@@ -34,14 +22,20 @@ def tally_votes():
         
         print("Votes loaded successfully. Processing each vote...")
 
-        # Initialize vote tally dictionary
+        # Initialize vote tally dictionary and a set for unique voter tracking
         tally = {}
         valid_votes_count = 0
+        processed_voters = set()
 
         for vote_entry in votes:
             voter_id = vote_entry['voter_id']
             encrypted_vote = vote_entry['encrypted_vote']
             signature = vote_entry['signature']
+
+            # Skip this vote if the voter has already been processed
+            if voter_id in processed_voters:
+                print(f"Duplicate vote detected for voter {voter_id}. Skipping.")
+                continue
 
             # Load each voter's public key for signature verification
             try:
@@ -64,6 +58,7 @@ def tally_votes():
                 # Count the vote
                 tally[vote_choice] = tally.get(vote_choice, 0) + 1
                 valid_votes_count += 1
+                processed_voters.add(voter_id)  # Mark voter as processed
                 print(f"Vote counted for {vote_choice} from voter {voter_id}.")
             except Exception as e:
                 print(f"Error decrypting vote for voter {voter_id}: {e}")
