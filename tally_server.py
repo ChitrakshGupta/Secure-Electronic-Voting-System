@@ -1,6 +1,7 @@
 import pickle
 import json
 from phe import paillier
+import os
 
 # Load Paillier keys
 def load_paillier_keys():
@@ -33,6 +34,12 @@ def stop_voting_session():
     global voting_active
     voting_active = False
     print("Voting session stopped. Displaying results...")
+
+def reset_votes():
+    """ Reset the stored votes before starting a new session. """
+    # Clear the previous votes (reset the file or use another method)
+    with open("votes.json", "w") as f:
+        json.dump([], f)  # Empty list means no votes have been cast
 
 def tally_votes():
     # Load the encrypted votes from the file
@@ -74,6 +81,10 @@ def tally_votes():
 def run_tally_server():
     global voting_active
     while voting_active:
+        # Reset votes before starting each session
+        reset_votes()
+        print("Previous votes have been cleared. Starting new session...")
+
         command = input("Enter 'stop' to end the voting session and tally the votes: ")
         if command.lower() == 'stop':
             stop_voting_session()
