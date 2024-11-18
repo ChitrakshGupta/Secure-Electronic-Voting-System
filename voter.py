@@ -16,9 +16,7 @@ def has_voted(voter_id):
         try:
             with open(VOTES_FILE, 'r') as f:
                 contents = f.read()  # Read the file's contents to check for issues
-                print("Contents of votes.json:", contents)
                 if contents.strip() == "":  # In case the file is empty
-                    print("Error: votes.json is empty. Initializing file.")
                     return False
 
                 votes = json.loads(contents)  # Attempt to load the JSON data
