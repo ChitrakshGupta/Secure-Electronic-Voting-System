@@ -1,107 +1,67 @@
+import pickle
 import json
-import os
-from rsa_helpers import decrypt_data, verify_signature
+from phe import paillier
 
-# Load the admin's private key for decrypting votes
-with open('private_key.pem', 'rb') as f:
-    admin_private_key = f.read()
+# Load Paillier keys
+def load_paillier_keys():
+    with open('paillier_public_key.pkl', 'rb') as f:
+        public_key_paillier = pickle.load(f)
+    with open('paillier_private_key.pkl', 'rb') as f:
+        private_key_paillier = pickle.load(f)
+    return public_key_paillier, private_key_paillier
 
-VOTES_FILE = 'votes.json'
+# Load the candidate mapping
+def load_candidate_mapping():
+    with open('candidate_mapping.json', 'r') as f:
+        return json.load(f)
 
-def start_new_session():
-    """Clear previous votes to start a new voting session."""
-    if os.path.exists(VOTES_FILE):
-        os.remove(VOTES_FILE)
-    print("New voting session started. All previous votes cleared.")
+# Load Paillier keys and candidates
+public_key_paillier, private_key_paillier = load_paillier_keys()
+candidate_ids = load_candidate_mapping()  # Load candidate mapping here
+
+# Define a scaling factor (e.g., divide votes by 100 to reduce size)
+SCALING_FACTOR = 10
+
+def unscale_vote(scaled_vote_count):
+    """ Scale up the vote count after decryption """
+    return scaled_vote_count * SCALING_FACTOR
 
 def tally_votes():
-    """Process and tally votes from the current session."""
-    try:
-        with open(VOTES_FILE, 'r') as f:
-            votes = json.load(f)
+    # Load the encrypted votes from the file
+    with open("votes.json", "r") as f:
+        votes = json.load(f)
+    
+    # Initialize total vote tally as an EncryptedNumber for each candidate
+    total_vote = {candidate_id: public_key_paillier.encrypt(0) for candidate_id in candidate_ids}
+
+    for vote in votes:
+        selected_candidate_id = vote['selected_candidate_id']
         
-        print("Votes loaded successfully. Processing each vote...")
-
-        # Initialize vote tally dictionary and a set for unique voter tracking
-        tally = {}
-        valid_votes_count = 0
-        processed_voters = set()
-
-        for vote_entry in votes:
-            voter_id = vote_entry['voter_id']
-            encrypted_vote = vote_entry['encrypted_vote']
-            signature = vote_entry['signature']
-
-            # Skip this vote if the voter has already been processed
-            if voter_id in processed_voters:
-                print(f"Duplicate vote detected for voter {voter_id}. Skipping.")
-                continue
-
-            # Load each voter's public key for signature verification
-            try:
-                with open(f"{voter_id}_public_key.pem", 'rb') as key_file:
-                    voter_public_key = key_file.read()
-            except FileNotFoundError:
-                print(f"Public key for voter {voter_id} not found. Skipping this vote.")
-                continue
-
-            # Verify the voter's signature
-            if not verify_signature(voter_public_key, encrypted_vote, signature):
-                print(f"Invalid signature for voter {voter_id}. Skipping this vote.")
-                continue
-
-            # Decrypt the vote
-            try:
-                decrypted_vote = decrypt_data(admin_private_key, encrypted_vote)
-                _, vote_choice = decrypted_vote.split(':')  # Format: "voter_id:vote_choice"
-                
-                # Count the vote
-                tally[vote_choice] = tally.get(vote_choice, 0) + 1
-                valid_votes_count += 1
-                processed_voters.add(voter_id)  # Mark voter as processed
-                print(f"Vote counted for {vote_choice} from voter {voter_id}.")
-            except Exception as e:
-                print(f"Error decrypting vote for voter {voter_id}: {e}")
-
-        if valid_votes_count == 0:
-            print("No valid votes were tallied.")
-        return tally
-
-    except FileNotFoundError:
-        print("No votes to tally. Ensure votes are cast before closing the session.")
-        return {}
-
-# Main session loop
-try:
-    start_new_session()
-
-    print("Tally server is open for votes. Enter 'stop' to end the session and tally votes.")
-
-    while True:
-        command = input("Type 'stop' to end the voting session and tally votes: ").strip()
+        if selected_candidate_id not in total_vote:
+            print(f"Invalid candidate ID: {selected_candidate_id}")
+            continue
         
-        if command.lower() == 'stop':
-            print("\nEnding voting session and tallying results...\n")
-            vote_tally = tally_votes()
+        # Convert the raw ciphertext back into an EncryptedNumber object
+        encrypted_vote = paillier.EncryptedNumber(public_key_paillier, vote['encrypted_vote'])
 
-            if vote_tally:
-                print("\nFinal Vote Tally:")
-                for candidate, count in vote_tally.items():
-                    print(f"{candidate}: {count} votes")
-            else:
-                print("No valid votes were tallied.")
-            break
+        # Add the encrypted vote to the corresponding candidate's tally
+        total_vote[selected_candidate_id] += encrypted_vote
 
-except KeyboardInterrupt:
-    print("\nSession interrupted. Tallying votes...\n")
-    vote_tally = tally_votes()
+    # Decrypt the final tally and check for overflow
+    for candidate_id, encrypted_tally in total_vote.items():
+        try:
+            # Decrypt the final tally using the private key
+            decrypted_tally = private_key_paillier.decrypt(encrypted_tally)
+            
+            # Unscale the tally to the original scale
+            final_tally = decrypted_tally // SCALING_FACTOR
+            
+            print(f"Candidate {candidate_id} has {final_tally} votes")
+        except OverflowError:
+            print(f"Overflow error while decrypting tally for Candidate {candidate_id}. Check vote size.")
+        except Exception as e:
+            print(f"Error while decrypting tally for Candidate {candidate_id}: {e}")
 
-    if vote_tally:
-        print("\nFinal Vote Tally:")
-        for candidate, count in vote_tally.items():
-            print(f"{candidate}: {count} votes")
-    else:
-        print("No valid votes were tallied.")
-
-finally:
-    print("Voting session closed.")
+# Run the tally function
+if __name__ == "__main__":
+    tally_votes()

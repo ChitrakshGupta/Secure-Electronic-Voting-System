@@ -3,6 +3,7 @@ from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 import base64
+from phe import paillier
 
 # Generate RSA keys
 def generate_keys():
@@ -20,7 +21,11 @@ def save_keys(private_key, public_key, voter_id):
 
 # Encrypt data with the public key
 def encrypt_data(public_key, data):
-    rsa_key = RSA.import_key(public_key)
+    if isinstance(public_key, bytes):
+        rsa_key = RSA.import_key(public_key)  # If it's bytes, import it
+    else:
+        rsa_key = public_key  # If it's already an RSA key object
+
     cipher = PKCS1_OAEP.new(rsa_key)
     encrypted_data = cipher.encrypt(data.encode('utf-8'))
     return base64.b64encode(encrypted_data).decode('utf-8')
@@ -34,13 +39,19 @@ def decrypt_data(private_key, encrypted_data):
 
 # Function to sign data with voter's private key
 def sign_data(private_key, data):
-    if isinstance(data, str):
-        data = data.encode('utf-8')
-    h = SHA256.new(data)
-    rsa_key = RSA.import_key(private_key)
-    signature = pkcs1_15.new(rsa_key).sign(h)
-    return base64.b64encode(signature).decode('utf-8')
+    # Ensure private_key is raw bytes, not an RSA key object
+    if isinstance(private_key, RSA.RsaKey):
+        private_key = private_key.export_key()  # Export the raw key in bytes format
 
+    # Create a SHA256 hash of the data
+    h = SHA256.new(data.encode())
+
+    # Sign the hash using the private key
+    signer = pkcs1_15.new(RSA.import_key(private_key))
+    signature = signer.sign(h)
+
+    return signature
+    
 # Function to verify signature with public key
 def verify_signature(public_key, data, signature):
     if isinstance(data, str):
@@ -52,3 +63,14 @@ def verify_signature(public_key, data, signature):
         return True
     except (ValueError, TypeError):
         return False
+
+# Paillier encryption for homomorphic voting tallying
+def generate_paillier_keys():
+    public_key, private_key = paillier.generate_paillier_keypair()
+    return public_key, private_key
+
+def encrypt_with_paillier(public_key, value):
+    return public_key.encrypt(value)
+
+def decrypt_with_paillier(private_key, encrypted_value):
+    return private_key.decrypt(encrypted_value)
