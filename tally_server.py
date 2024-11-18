@@ -26,6 +26,14 @@ def unscale_vote(scaled_vote_count):
     """ Scale up the vote count after decryption """
     return scaled_vote_count * SCALING_FACTOR
 
+# Initialize session state
+voting_active = True  # Voting session starts as active
+
+def stop_voting_session():
+    global voting_active
+    voting_active = False
+    print("Voting session stopped. Displaying results...")
+
 def tally_votes():
     # Load the encrypted votes from the file
     with open("votes.json", "r") as f:
@@ -62,6 +70,14 @@ def tally_votes():
         except Exception as e:
             print(f"Error while decrypting tally for Candidate {candidate_id}: {e}")
 
-# Run the tally function
+# Main loop for voting session
+def run_tally_server():
+    global voting_active
+    while voting_active:
+        command = input("Enter 'stop' to end the voting session and tally the votes: ")
+        if command.lower() == 'stop':
+            stop_voting_session()
+            tally_votes()
+
 if __name__ == "__main__":
-    tally_votes()
+    run_tally_server()
