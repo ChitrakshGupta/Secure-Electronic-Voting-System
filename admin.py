@@ -48,7 +48,7 @@ candidates = ["Candidate A", "Candidate B", "Candidate C"]
 # Map each candidate to a unique integer
 candidate_ids = {i: candidate for i, candidate in enumerate(candidates)}
 
-# Encrypt the candidate IDs using Paillier
+# Encrypt each candidate's ID using Paillier encryption
 encrypted_candidates = [public_key_paillier.encrypt(candidate_id) for candidate_id in candidate_ids.keys()]
 
 # Save encrypted candidate list (using pickle to serialize EncryptedNumber objects)
