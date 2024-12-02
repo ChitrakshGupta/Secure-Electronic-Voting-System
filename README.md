@@ -1,6 +1,6 @@
 # Secure Electronic Voting System
 
-This project is a **Secure Electronic Voting System** designed to ensure privacy, authenticity, and integrity in elections. The system uses cryptographic techniques such as **RSA encryption**, **Paillier encryption**, **Blind Signatures**, and **Digital Signatures** to protect votes and ensure voter anonymity while maintaining verifiability.
+This project is a **Secure Electronic Voting System** designed to ensure privacy, authenticity, and integrity in elections. The system uses cryptographic techniques such as Oblivious Transfer, Paillier encryption, RSA encryption, and Digital Signatures to protect votes and ensure voter anonymity while maintaining verifiability.
 
 ---
 
