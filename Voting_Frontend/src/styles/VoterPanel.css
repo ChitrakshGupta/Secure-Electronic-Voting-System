@@ -1,0 +1,153 @@
+/* General Container Styling */
+.voter-panel {
+  font-family: Arial, sans-serif;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+/* Header Styling */
+.voter-panel-header {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Messages and Timer */
+.eligibility-message {
+  text-align: center;
+  color: #555;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.vote-timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Candidate List */
+.candidate-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  
+}
+
+.candidate-item {
+  display: flex;
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Horizontally center items */
+
+  margin: 15px 0;
+  padding: 12px;
+  padding-left: 20px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px; /* Add some space between the image and the name */
+}
+
+.candidate-name {
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center; /* Center text */
+}
+
+
+.candidate-item:hover {
+  transform: scale(1.05);
+  border-color: #007bff;
+}
+
+.candidate-item.selected {
+  border-color: #28a745;
+  background-color: #e9ffe9;
+}
+
+
+/* Buttons */
+.voter-panel-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0275d8;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.voter-panel-button:hover {
+  background-color: #025aa5;
+  transform: translateY(-2px);
+}
+
+.voter-panel-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Confirmation Dialog */
+.vote-confirmation {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.vote-confirmation p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.vote-confirmation-button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.vote-confirmation-button.confirm {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.vote-confirmation-button.confirm:hover {
+  background-color: #4cae4c;
+}
+
+.vote-confirmation-button.cancel {
+  background-color: #d9534f;
+  color: white;
+}
+
+.vote-confirmation-button.cancel:hover {
+  background-color: #c9302c;
+}
