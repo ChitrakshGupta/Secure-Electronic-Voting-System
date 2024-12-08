@@ -1,0 +1,414 @@
+/* AdminPanel.css */
+
+/* General Container */
+.admin-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar Styling */
+.admin-sidebar {
+  width: 20%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.admin-sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.admin-sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar-item {
+  margin: 10px 0;
+  padding: 10px 15px;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.admin-sidebar-item:hover {
+  background: #555;
+  transform: scale(1.05);
+}
+
+/* Main Content */
+.admin-content {
+  flex-grow: 1;
+  padding: 20px;
+  background: #f8f9fa;
+  overflow-y: auto;
+}
+
+/* Voting Section */
+.admin-section {
+  margin-bottom: 30px;
+}
+
+.admin-section-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: left;
+}
+
+.admin-button {
+  font-size: 16px;
+  padding: 10px 15px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.admin-button.start {
+  background: #28a745;
+  color: white;
+}
+
+.admin-button.stop {
+  background: #dc3545;
+  color: white;
+}
+
+.admin-button.add {
+  background: #007bff;
+  color: white;
+}
+
+.admin-button:hover {
+  transform: translateY(-2px);
+  background-color: #0056b3;
+}
+
+.admin-button:disabled {
+  cursor: not-allowed;
+  background-color: #ccc;
+}
+
+/* Voter Management Section */
+.admin-input {
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.admin-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.admin-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-list-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-list-name {
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-left: 15px;
+}
+
+.admin-list-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-edit-input {
+  margin: 5px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Candidate Management Section */
+.candidate-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.candidate-name {
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-left: 15px;
+}
+
+.candidate-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Result Section */
+.result-section {
+  text-align: left;
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.result-list-item {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Messages */
+.admin-message {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: green;
+  text-align: center;
+}
+
+
+.admin-voter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-voter-input {
+  flex: 1;
+  min-width: 30%; /* Adjust the minimum width to fit input fields */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.admin-button-container {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-edit-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-edit-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.admin-input.edit {
+  flex: 1;
+  min-width: 10%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
+.admin-candidate-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-candidate-input {
+  flex: 1;
+  min-width: 30%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.admin-button-container {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+
+.admin-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-result-table th,
+.admin-result-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-result-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  text-align: center;
+}
+
+.admin-result-table td {
+  text-align: center;
+}
+
+.admin-result-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.admin-result-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+
+/* Default button styling */
+.admin-button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Start button styling */
+.admin-button.start {
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Stop button styling */
+.admin-button.stop {
+  background-color: #d9534f;
+  color: white;
+}
+
+.admin-button.start:disabled {
+  background-color: #888383; /* Keep the green color when disabled */
+  color: white; /* Keep the text color white */
+  cursor: not-allowed; /* Not-allowed cursor to indicate it's disabled */
+  opacity: 0.7; /* Slightly transparent for the disabled effect */
+}
+
+/* Disabled state for Stop button */
+.admin-button.stop:disabled {
+  background-color: #888383; /* Gray background for disabled */
+  color: #a0a0a0; /* Light gray text */
+  cursor: not-allowed; /* Not-allowed cursor to indicate it's disabled */
+  opacity: 0.7;
+}
+
+/* Loading state styling */
+.admin-button.loading {
+  background-color: #606264; /* Gray background for loading */
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Hover effects */
+.admin-button:hover:not(.loading) {
+  transform: translateY(-2px);
+}
+
+.admin-button.start:hover:not(.loading) {
+  background-color: #4cae4c; /* Darker green on hover */
+}
+
+.admin-button.stop:hover:not(.loading) {
+  background-color: #c9302c; /* Darker red on hover */
+}
+.voter-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-list-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.voter-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-list-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 30px;
+}
+
+.admin-list-email {
+  font-size: 14px;
+  color: #555;
+}

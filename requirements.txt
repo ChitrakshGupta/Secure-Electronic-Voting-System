@@ -1,3 +1,8 @@
+Flask==2.3.2
+Flask-Cors==3.0.10
+Flask-Bcrypt==1.0.1
+Flask-SQLAlchemy==3.0.5
+pyjwt==2.7.0
 phe==1.4.0
 pycryptodome==3.18.0
 pickle5==0.0.13
